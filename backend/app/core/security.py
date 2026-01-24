@@ -8,7 +8,13 @@ def hash_password(password: str) -> str:
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    return bcrypt.checkpw(plain.encode(), hashed.encode())
+    try:
+        # Ensure hashed password is properly formatted
+        if not hashed.startswith(("$2a$", "$2b$", "$2y$")):
+            print(f"Warning: Invalid bcrypt hash format: {hashed[:20]}...")
+            return False
 
-
-print(hash_password("moundlitch21"))
+        return bcrypt.checkpw(plain.encode(), hashed.encode())
+    except ValueError as e:
+        print(f"Password verification error: {e}")
+        return False

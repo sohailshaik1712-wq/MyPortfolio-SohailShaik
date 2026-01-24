@@ -9,6 +9,8 @@ def authenticate(username, password, admin_user, admin_hash):
     if username != admin_user:
         return False
 
+    print(f"DEBUG: Hash starts with: {admin_hash[:20] if admin_hash else 'None'}...")
+    print(f"DEBUG: Hash length: {len(admin_hash) if admin_hash else 0}")
     return verify_password(password, admin_hash)
 
 
