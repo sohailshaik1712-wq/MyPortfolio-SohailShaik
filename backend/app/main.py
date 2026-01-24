@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -6,6 +7,7 @@ from app.api.routes.projects import router as project_router
 from app.db.base import Base
 from app.db.session import engine
 
+load_dotenv()
 # Create tables
 Base.metadata.create_all(bind=engine)
 
