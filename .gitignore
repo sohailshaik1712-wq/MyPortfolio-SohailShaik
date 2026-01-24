@@ -1,5 +1,19 @@
+# Virtual env
 venv/
-.env
-*.db
+
+# Python cache
 __pycache__/
+*.pyc
+
+# Env & secrets
+.env
+
+# Databases
+*.db
+portfolio.db
+
+# OS
 .DS_Store
+
+# Docker
+*.log

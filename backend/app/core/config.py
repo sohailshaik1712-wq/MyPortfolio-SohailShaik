@@ -1,6 +1,5 @@
 import os
 
-from app.core.security import verify_password
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,7 +19,6 @@ ADMIN_USERNAME: str = _require_env("ADMIN_USERNAME")
 ADMIN_PASSWORD_HASH: str = _require_env("ADMIN_PASSWORD_HASH")
 SECRET_KEY: str = _require_env("SECRET_KEY")
 
-print(verify_password("moundlitch21", ADMIN_PASSWORD_HASH))
 
 # Optional
 ALGORITHM: str = "HS256"
