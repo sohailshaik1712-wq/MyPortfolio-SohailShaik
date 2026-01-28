@@ -5,6 +5,8 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "build"
+      - "--platform"
+      - "linux/amd64"
       - "-t"
       - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA"
       - "-t"
@@ -17,6 +19,8 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "build"
+      - "--platform"
+      - "linux/amd64"
       - "-t"
       - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA"
       - "-t"
@@ -24,33 +28,35 @@ steps:
       - "./frontend"
 
   # ===============================
-  # Push Backend
+  # Push Images (Backend & Frontend)
   # ===============================
   - name: "gcr.io/cloud-builders/docker"
     args:
-      - "push"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA"
-
+      [
+        "push",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA",
+      ]
   - name: "gcr.io/cloud-builders/docker"
     args:
-      - "push"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest"
-
-  # ===============================
-  # Push Frontend
-  # ===============================
+      [
+        "push",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest",
+      ]
   - name: "gcr.io/cloud-builders/docker"
     args:
-      - "push"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA"
-
+      [
+        "push",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA",
+      ]
   - name: "gcr.io/cloud-builders/docker"
     args:
-      - "push"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"
+      [
+        "push",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest",
+      ]
 
   # ===============================
-  # Deploy Backend
+  # Deploy Backend (With Secrets)
   # ===============================
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
@@ -62,8 +68,12 @@ steps:
       - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA"
       - "--region"
       - "us-central1"
-      - "--platform"
-      - "managed"
+      # Securely injecting secrets
+      - "--set-secrets"
+      - "DATABASE_URL=DATABASE_URL:latest,ADMIN_PASSWORD_HASH=ADMIN_PASSWORD_HASH:latest,SECRET_KEY=SECRET_KEY:latest"
+      # Non-sensitive variable
+      - "--set-env-vars"
+      - "ADMIN_USERNAME=sohailshaik"
       - "--allow-unauthenticated"
       - "--port"
       - "8080"
@@ -71,8 +81,6 @@ steps:
       - "512Mi"
       - "--cpu"
       - "1"
-      - "--timeout"
-      - "300"
 
   # ===============================
   # Deploy Frontend
@@ -87,21 +95,14 @@ steps:
       - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA"
       - "--region"
       - "us-central1"
-      - "--platform"
-      - "managed"
       - "--allow-unauthenticated"
       - "--port"
-      - "8080"
+      - "8501" # Default Streamlit port
       - "--memory"
       - "512Mi"
       - "--cpu"
       - "1"
-      - "--timeout"
-      - "300"
 
-# ===============================
-# Images
-# ===============================
 images:
   - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA"
   - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest"
