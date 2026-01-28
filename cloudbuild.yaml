@@ -1,5 +1,5 @@
 steps:
-  # 1. Build and Push Backend Image
+  # 1. Build & Push Backend
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -11,7 +11,7 @@ steps:
         "./backend",
       ]
 
-  # 2. Build and Push Frontend Image
+  # 2. Build & Push Frontend
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -23,36 +23,40 @@ steps:
         "./frontend",
       ]
 
-  # 3. Deploy Backend to Cloud Run
+  # 3. Deploy Backend
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
-      - "run"
-      - "deploy"
-      - "portfolio-backend"
-      - "--image"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest"
-      - "--region"
-      - "us-central1"
-      - "--platform"
-      - "managed"
-      - "--allow-unauthenticated"
+      [
+        "run",
+        "deploy",
+        "portfolio-backend",
+        "--image",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest",
+        "--region",
+        "us-central1",
+        "--platform",
+        "managed",
+        "--allow-unauthenticated",
+      ]
 
-  # 4. Deploy Frontend to Cloud Run
+  # 4. Deploy Frontend
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
-      - "run"
-      - "deploy"
-      - "portfolio-frontend"
-      - "--image"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"
-      - "--region"
-      - "us-central1"
-      - "--platform"
-      - "managed"
-      - "--allow-unauthenticated"
+      [
+        "run",
+        "deploy",
+        "portfolio-frontend",
+        "--image",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest",
+        "--region",
+        "us-central1",
+        "--platform",
+        "managed",
+        "--allow-unauthenticated",
+      ]
 
-images:
-  - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest"
-  - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"
+# THE FIX IS HERE
+options:
+  logging: CLOUD_LOGGING_ONLY
