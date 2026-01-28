@@ -1,5 +1,5 @@
 steps:
-  # 1. Build & Push Backend with unique SHA tag
+  # 1. Build & Push Backend
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -11,7 +11,7 @@ steps:
         "./backend",
       ]
 
-  # 2. Build & Push Frontend with unique SHA tag
+  # 2. Build & Push Frontend
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -23,39 +23,31 @@ steps:
         "./frontend",
       ]
 
-  # 3. Deploy Backend using the specific SHA image
+  # 3. Deploy Backend
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
-      [
-        "run",
-        "deploy",
-        "portfolio-backend",
-        "--image",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA",
-        "--region",
-        "us-central1",
-        "--platform",
-        "managed",
-        "--allow-unauthenticated",
-      ]
+      - "run"
+      - "deploy"
+      - "portfolio-backend"
+      - "--image"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA"
+      - "--region"
+      - "us-central1"
+      - "--allow-unauthenticated"
 
-  # 4. Deploy Frontend using the specific SHA image
+  # 4. Deploy Frontend
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
-      [
-        "run",
-        "deploy",
-        "portfolio-frontend",
-        "--image",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA",
-        "--region",
-        "us-central1",
-        "--platform",
-        "managed",
-        "--allow-unauthenticated",
-      ]
+      - "run"
+      - "deploy"
+      - "portfolio-frontend"
+      - "--image"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA"
+      - "--region"
+      - "us-central1"
+      - "--allow-unauthenticated"
 
 options:
   logging: CLOUD_LOGGING_ONLY
