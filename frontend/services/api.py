@@ -2,7 +2,7 @@ import os
 
 import requests
 
-BASE_URL = os.getenv("API_URL", "http://localhost:8000")
+BASE_URL = os.getenv("BACKEND_URL", "http://localhost:8000").rstrip("/")
 
 
 def login(username, password):

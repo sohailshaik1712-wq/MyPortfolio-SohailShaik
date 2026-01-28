@@ -1,0 +1,58 @@
+steps:
+  # 1. Build and Push Backend Image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "--platform",
+        "linux/amd64",
+        "-t",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest",
+        "./backend",
+      ]
+
+  # 2. Build and Push Frontend Image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "--platform",
+        "linux/amd64",
+        "-t",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest",
+        "./frontend",
+      ]
+
+  # 3. Deploy Backend to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "portfolio-backend"
+      - "--image"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest"
+      - "--region"
+      - "us-central1"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+
+  # 4. Deploy Frontend to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "portfolio-frontend"
+      - "--image"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"
+      - "--region"
+      - "us-central1"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+
+images:
+  - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest"
+  - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"
