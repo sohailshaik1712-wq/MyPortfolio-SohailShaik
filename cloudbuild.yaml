@@ -1,5 +1,5 @@
 steps:
-  # 1. Build & Push Backend
+  # 1. Build & Push Backend with unique SHA tag
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -7,11 +7,11 @@ steps:
         "--platform",
         "linux/amd64",
         "-t",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA",
         "./backend",
       ]
 
-  # 2. Build & Push Frontend
+  # 2. Build & Push Frontend with unique SHA tag
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -19,11 +19,11 @@ steps:
         "--platform",
         "linux/amd64",
         "-t",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA",
         "./frontend",
       ]
 
-  # 3. Deploy Backend
+  # 3. Deploy Backend using the specific SHA image
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
@@ -32,7 +32,7 @@ steps:
         "deploy",
         "portfolio-backend",
         "--image",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA",
         "--region",
         "us-central1",
         "--platform",
@@ -40,7 +40,7 @@ steps:
         "--allow-unauthenticated",
       ]
 
-  # 4. Deploy Frontend
+  # 4. Deploy Frontend using the specific SHA image
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
@@ -49,7 +49,7 @@ steps:
         "deploy",
         "portfolio-frontend",
         "--image",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA",
         "--region",
         "us-central1",
         "--platform",
@@ -57,6 +57,5 @@ steps:
         "--allow-unauthenticated",
       ]
 
-# THE FIX IS HERE
 options:
   logging: CLOUD_LOGGING_ONLY
