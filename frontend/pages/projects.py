@@ -4,7 +4,7 @@ from services.api import get_projects
 st.set_page_config(page_title="Projects | Sohail Shaik", layout="wide")
 
 st.title("📂 Project Gallery")
-st.write("A collection of my work in Data Engineering, MLOps, and Deep Learning.")
+st.write("A collection of my work.")
 
 # --- FETCH PROJECTS WITH LOADING STATE ---
 with st.spinner("Loading projects..."):
