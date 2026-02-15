@@ -1,12 +1,11 @@
 from contextlib import asynccontextmanager
 
+from api.routes.auth import router as auth_router
+from api.routes.projects import router as project_router
+from db.base import Base
+from db.session import engine
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from app.api.routes.auth import router as auth_router
-from app.api.routes.projects import router as project_router
-from app.db.base import Base
-from app.db.session import engine
 
 
 @asynccontextmanager
@@ -25,7 +24,8 @@ app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000"],  # Your Next.js dev server
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )

@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================
+   APPLE-LAYERED THEME BASE
+   ========================= */
+
+@layer base {
+  body {
+    /* Soft layered neutrals */
+    @apply bg-[#f5f5f7] text-[#1d1d1f] antialiased
+           dark:bg-[#0d0d0f] dark:text-[#f5f5f7]
+           transition-colors duration-300;
+
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  /* Better text rendering */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* =========================
+   SURFACE TOKENS
+   ========================= */
+
+@layer components {
+
+  /* Elevated card surface */
+  .surface {
+    @apply bg-white dark:bg-[#1c1c1e]
+           border border-[#e5e5ea] dark:border-[#2c2c2e]
+           shadow-[0_1px_2px_rgba(0,0,0,0.04)];
+  }
+
+  /* Secondary muted text */
+  .text-muted {
+    @apply text-[#6e6e73] dark:text-[#a1a1a6];
+  }
+
+  /* Interactive subtle hover */
+  .hover-soft {
+    @apply hover:opacity-80 transition duration-200;
+  }
+}
+
+/* =========================
+   SCROLLBAR
+   ========================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d2d2d7;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3a3a3c;
+}
+
+/* =========================
+   SELECTION
+   ========================= */
+
+::selection {
+  background: #d2d2d7;
+  color: #1d1d1f;
+}
+
+.dark ::selection {
+  background: #3a3a3c;
+  color: #f5f5f7;
+}
+
+/* =========================
+   FOCUS RING (Apple subtle)
+   ========================= */
+
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.6);
+}
+
+/* Prevent media overflow */
+img {
+  max-width: 100%;
+  height: auto;
+}

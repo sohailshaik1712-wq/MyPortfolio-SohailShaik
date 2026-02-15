@@ -10,8 +10,6 @@ def _require_env(name: str) -> str:
     if not value:
         raise RuntimeError(f"Missing environment variable: {name}")
 
-    # NEW: Self-healing for Secret Manager "byte-literal" corruption
-    # This removes literal b'...' or b"..." prefixes if they exist
     if name == "ADMIN_PASSWORD_HASH":
         value = value.strip()
         if (value.startswith("b'") and value.endswith("'")) or (

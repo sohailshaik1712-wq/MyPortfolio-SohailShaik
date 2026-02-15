@@ -1,11 +1,11 @@
-from app.core.config import (
+from core.config import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     ADMIN_PASSWORD_HASH,
     ADMIN_USERNAME,
 )
-from app.services.auth import authenticate, create_token
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
+from services.auth import authenticate, create_token
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 

@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
-from app.core.config import ALGORITHM, SECRET_KEY
-from app.core.security import verify_password
+from core.config import ALGORITHM, SECRET_KEY
+from core.security import verify_password
 from jose import jwt
 
 
