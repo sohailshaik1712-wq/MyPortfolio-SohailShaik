@@ -14,7 +14,7 @@ steps:
       - "./backend"
 
   # ===============================
-  # Build Frontend
+  # Build Frontend (Next.js)
   # ===============================
   - name: "gcr.io/cloud-builders/docker"
     args:
@@ -25,38 +25,28 @@ steps:
       - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA"
       - "-t"
       - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"
-      - "./frontend"
+      - "./my-portfolio-frontend"   # 👈 IMPORTANT FIX
 
   # ===============================
-  # Push Images (Backend & Frontend)
+  # Push Backend
   # ===============================
   - name: "gcr.io/cloud-builders/docker"
-    args:
-      [
-        "push",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA",
-      ]
+    args: ["push", "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA"]
+
   - name: "gcr.io/cloud-builders/docker"
-    args:
-      [
-        "push",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest",
-      ]
-  - name: "gcr.io/cloud-builders/docker"
-    args:
-      [
-        "push",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA",
-      ]
-  - name: "gcr.io/cloud-builders/docker"
-    args:
-      [
-        "push",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest",
-      ]
+    args: ["push", "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:latest"]
 
   # ===============================
-  # Deploy Backend (With Secrets)
+  # Push Frontend
+  # ===============================
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA"]
+
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"]
+
+  # ===============================
+  # Deploy Backend
   # ===============================
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
@@ -68,10 +58,8 @@ steps:
       - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA"
       - "--region"
       - "us-central1"
-      # Securely injecting secrets
       - "--set-secrets"
       - "DATABASE_URL=DATABASE_URL:latest,ADMIN_PASSWORD_HASH=ADMIN_PASSWORD_HASH:latest,SECRET_KEY=SECRET_KEY:latest"
-      # Non-sensitive variable
       - "--set-env-vars"
       - "ADMIN_USERNAME=sohailshaik"
       - "--allow-unauthenticated"
@@ -83,7 +71,7 @@ steps:
       - "1"
 
   # ===============================
-  # Deploy Frontend
+  # Deploy Frontend (Next.js)
   # ===============================
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
@@ -97,7 +85,7 @@ steps:
       - "us-central1"
       - "--allow-unauthenticated"
       - "--port"
-      - "8501" # Default Streamlit port
+      - "8080"     # 👈 FIXED (NOT 8501)
       - "--memory"
       - "512Mi"
       - "--cpu"
