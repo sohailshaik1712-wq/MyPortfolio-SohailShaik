@@ -12,14 +12,16 @@ steps:
 
   - name: "gcr.io/cloud-builders/docker"
     args:
-      - "build"
-      - "--platform"
-      - "linux/amd64"
-      - "-t"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA"
-      - "-t"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"
-      - "./frontend"
+        - "build"
+        - "--platform"
+        - "linux/amd64"
+        - "--build-arg"
+        - "NEXT_PUBLIC_API_URL=https://portfolio-backend-wae47id47a-uc.a.run.app"
+        - "-t"
+        - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA"
+        - "-t"
+        - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"
+        - "./frontend"
 
 
   - name: "gcr.io/cloud-builders/docker"

@@ -5,12 +5,18 @@ RUN npm ci
 
 FROM node:20-alpine AS builder
 WORKDIR /app
+
+# Accept build argument for API URL
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
 FROM node:20-alpine AS runner
 WORKDIR /app
+
 ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
@@ -21,7 +27,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
+
 EXPOSE 8080
-ENV PORT 8080
+ENV PORT=8080
+ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]
