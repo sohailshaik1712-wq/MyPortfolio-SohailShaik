@@ -13,7 +13,7 @@ services:
     restart: always
 
   frontend:
-    build: ./my-portfolio-frontend
+    build: ./frontend
     container_name: portfolio-frontend
     ports:
       - "3000:3000"

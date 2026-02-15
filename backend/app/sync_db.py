@@ -1,6 +1,7 @@
-from db.base import Base
-from db.session import engine
-from models.project import Project  # Ensure model is imported
+from app.db.base import Base
+from app.db.session import engine
+
+# from models.project import Project  # Ensure model is imported
 
 
 def reset_db():

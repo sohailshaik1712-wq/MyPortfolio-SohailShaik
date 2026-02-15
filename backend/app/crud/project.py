@@ -1,5 +1,5 @@
-from models.project import Project
-from schemas.project import ProjectCreate, ProjectUpdate
+from app.models.project import Project
+from app.schemas.project import ProjectCreate, ProjectUpdate
 from sqlalchemy.orm import Session
 
 
