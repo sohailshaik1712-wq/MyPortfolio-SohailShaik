@@ -91,7 +91,7 @@ steps:
       - "--timeout"
       - "300"
       - "--set-env-vars"
-      - "NEXT_PUBLIC_API_URL=https://portfolio-backend-1043823274774.us-central1.run.app"
+      - "NEXT_PUBLIC_API_URL=https://portfolio-backend-wae47id47a-uc.a.run.app"
 
 images:
   - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/backend:$SHORT_SHA"
