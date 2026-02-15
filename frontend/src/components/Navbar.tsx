@@ -26,6 +26,7 @@ export default function Navbar() {
   const handleLogout = () => {
     logout();
     setAdminDropdownOpen(false);
+    setMobileMenuOpen(false);
     router.push("/");
   };
 
@@ -172,10 +173,74 @@ export default function Navbar() {
           <button
             className="md:hidden text-[#6e6e73] dark:text-[#a1a1a6] hover:text-[#0071e3] dark:hover:text-[#2997ff] transition"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle mobile menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
+
+        {/* Mobile Menu - THIS WAS MISSING! */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-[#e5e5ea] dark:border-[#2c2c2e] py-4 space-y-1">
+            {navLinks.map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-4 py-3 rounded-lg text-sm font-medium transition ${
+                    active
+                      ? "bg-[#f2f2f5] dark:bg-[#2c2c2e] text-[#0071e3] dark:text-[#2997ff]"
+                      : "text-[#6e6e73] dark:text-[#a1a1a6] hover:bg-[#f2f2f5] dark:hover:bg-[#2c2c2e]"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+
+            {/* Theme Toggle for Mobile */}
+            <button
+              onClick={() => {
+                toggleTheme();
+                setMobileMenuOpen(false);
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-[#6e6e73] dark:text-[#a1a1a6] hover:bg-[#f2f2f5] dark:hover:bg-[#2c2c2e] transition"
+            >
+              {dark ? <Sun size={18} /> : <Moon size={18} />}
+              {dark ? "Light Mode" : "Dark Mode"}
+            </button>
+
+            {/* Admin/Auth for Mobile */}
+            {loggedIn ? (
+              <>
+                <Link
+                  href="/admin"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-[#6e6e73] dark:text-[#a1a1a6] hover:bg-[#f2f2f5] dark:hover:bg-[#2c2c2e] transition"
+                >
+                  <Shield size={18} />
+                  Admin Panel
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-[#6e6e73] dark:text-[#a1a1a6] hover:bg-[#f2f2f5] dark:hover:bg-[#2c2c2e] transition"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/admin/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 rounded-lg text-sm font-medium text-[#6e6e73] dark:text-[#a1a1a6] hover:bg-[#f2f2f5] dark:hover:bg-[#2c2c2e] transition"
+              >
+                Login
+              </Link>
+            )}
+          </div>
+        )}
       </div>
     </nav>
   );
