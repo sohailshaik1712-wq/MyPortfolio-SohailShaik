@@ -12,17 +12,16 @@ steps:
 
   - name: "gcr.io/cloud-builders/docker"
     args:
-        - "build"
-        - "--platform"
-        - "linux/amd64"
-        - "--build-arg"
-        - "NEXT_PUBLIC_API_URL=https://portfolio-backend-wae47id47a-uc.a.run.app"
-        - "-t"
-        - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA"
-        - "-t"
-        - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"
-        - "./frontend"
-
+      - "build"
+      - "--platform"
+      - "linux/amd64"
+      - "--build-arg"
+      - "NEXT_PUBLIC_API_URL=https://portfolio-backend-wae47id47a-uc.a.run.app"
+      - "-t"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:$SHORT_SHA"
+      - "-t"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"
+      - "./frontend"
 
   - name: "gcr.io/cloud-builders/docker"
     args:
@@ -47,7 +46,6 @@ steps:
       - "push"
       - "us-central1-docker.pkg.dev/$PROJECT_ID/portfolio-repo/frontend:latest"
 
-
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
@@ -59,7 +57,7 @@ steps:
       - "--region"
       - "us-central1"
       - "--set-secrets"
-      - "DATABASE_URL=DATABASE_URL:latest,ADMIN_PASSWORD_HASH=ADMIN_PASSWORD_HASH:latest,SECRET_KEY=SECRET_KEY:latest"
+      - "DATABASE_URL=DATABASE_URL:latest,SECRET_KEY=SECRET_KEY:latest,ADMIN_PASSWORD_HASH=ADMIN_PASSWORD_HASH:latest,PUSHOVER_USER=PUSHOVER_USER:latest,PUSHOVER_TOKEN=PUSHOVER_TOKEN:latest,GEMINI_API_KEY=GEMINI_API_KEY:latest"
       - "--set-env-vars"
       - "ADMIN_USERNAME=sohailshaik"
       - "--allow-unauthenticated"
@@ -71,7 +69,6 @@ steps:
       - "1"
       - "--timeout"
       - "300"
-
 
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
@@ -103,6 +100,5 @@ images:
 
 options:
   logging: CLOUD_LOGGING_ONLY
-
 
 timeout: "1800s"
