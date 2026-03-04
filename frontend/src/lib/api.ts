@@ -46,4 +46,13 @@ export const projects = {
   delete: (id: number) => api.delete(`/projects/${id}`),
 };
 
+export const chatbot = {
+  chat: (message: string, history: { role: string; content: string }[]) =>
+    // Matches Backend: prefix="/api/v1/chatbot" + endpoint="/chat"
+    api.post(API_URL + "/api/v1/chatbot/chat", {
+      message,
+      history,
+    }),
+};
+
 export default api;

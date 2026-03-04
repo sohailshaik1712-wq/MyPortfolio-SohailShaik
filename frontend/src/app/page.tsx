@@ -112,12 +112,10 @@ const certifications = [
 export default function Home() {
   return (
     <div className="min-h-screen transition-colors duration-300">
-
       {/* Hero */}
       <section className="border-b border-[#e5e5ea] dark:border-[#2c2c2e]">
         <div className="max-w-6xl mx-auto px-6 py-32">
           <div className="grid lg:grid-cols-[2fr,1fr] gap-20 items-start">
-
             {/* Left */}
             <div>
               <h1 className="text-6xl md:text-7xl font-light tracking-tight mb-8">
@@ -130,8 +128,9 @@ export default function Home() {
 
               <div className="space-y-6 mb-14 max-w-2xl text-[#6e6e73] dark:text-[#a1a1a6] leading-relaxed">
                 <p>
-                  I specialize in Master Data Management and data platform engineering,
-                  building governed, analytics-ready pipelines for enterprise systems.
+                  I specialize in Master Data Management and data platform
+                  engineering, building governed, analytics-ready pipelines for
+                  enterprise systems.
                 </p>
                 <p>
                   I also architect cloud-native applications focused on CI/CD,
@@ -158,13 +157,12 @@ export default function Home() {
                 >
                   View Projects
                 </Link>
-
-                <a
-                  href="mailto:sohailshaik1712@gmail.com"
+                <Link
+                  href="/chat"
                   className="px-6 py-3 rounded-full border border-[#e5e5ea] dark:border-[#2c2c2e] text-sm hover:opacity-80 transition"
                 >
-                  Get in Touch
-                </a>
+                  Chat with me
+                </Link>
               </div>
 
               {/* Social */}
@@ -216,19 +214,15 @@ export default function Home() {
       {/* Experience */}
       <Section title="Experience">
         <div className="relative pl-10">
-
           {/* Vertical Line */}
           <div className="absolute left-4 top-2 bottom-2 w-px bg-[#e5e5ea] dark:bg-[#2c2c2e]" />
 
           {experiences.map((exp, idx) => (
             <div key={idx} className="relative mb-14">
-
               {/* Timeline Dot */}
               <span className="absolute -left-[1.6rem] top-2 w-3 h-3 rounded-full bg-[#0071e3] dark:bg-[#2997ff] shadow-md" />
 
-              <h3 className="text-xl font-medium mb-2">
-                {exp.role}
-              </h3>
+              <h3 className="text-xl font-medium mb-2">{exp.role}</h3>
 
               <p className="text-sm text-[#6e6e73] dark:text-[#a1a1a6] mb-6">
                 {exp.company} · {exp.period}
@@ -241,12 +235,10 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-
             </div>
           ))}
         </div>
       </Section>
-
 
       {/* Skills */}
       <Section title="Technical Skills">
@@ -292,19 +284,15 @@ export default function Home() {
       {/* Education */}
       <Section title="Education">
         <div className="relative pl-10">
-
           {/* Vertical Line */}
           <div className="absolute left-4 top-2 bottom-2 w-px bg-[#e5e5ea] dark:bg-[#2c2c2e]" />
 
           {education.map((edu, idx) => (
             <div key={idx} className="relative mb-12">
-
               {/* Timeline Dot (more subtle than experience) */}
               <span className="absolute -left-[1.6rem] top-2 w-2.5 h-2.5 rounded-full bg-[#8e8e93] dark:bg-[#636366]" />
 
-              <h3 className="text-lg font-medium mb-2">
-                {edu.degree}
-              </h3>
+              <h3 className="text-lg font-medium mb-2">{edu.degree}</h3>
 
               <p className="text-sm text-[#6e6e73] dark:text-[#a1a1a6] mb-1">
                 {edu.institution} · {edu.period}
@@ -313,20 +301,18 @@ export default function Home() {
               <p className="text-sm text-[#6e6e73] dark:text-[#a1a1a6]">
                 {edu.field} · {edu.score}
               </p>
-
             </div>
           ))}
         </div>
       </Section>
-
 
       {/* CTA */}
       <section className="border-t border-[#e5e5ea] dark:border-[#2c2c2e]">
         <div className="max-w-6xl mx-auto px-6 py-32 text-center">
           <h2 className="text-4xl font-light mb-8">Let’s work together</h2>
           <p className="text-[#6e6e73] dark:text-[#a1a1a6] mb-12 max-w-2xl mx-auto">
-            I’m exploring opportunities in data engineering, MLOps,
-            and cloud-native systems.
+            I’m exploring opportunities in data engineering, MLOps, and
+            cloud-native systems.
           </p>
 
           <Link
@@ -356,9 +342,7 @@ function Stat({ label, value }: any) {
   return (
     <div>
       <p className="text-2xl font-light">{value}</p>
-      <p className="text-xs text-[#6e6e73] dark:text-[#a1a1a6]">
-        {label}
-      </p>
+      <p className="text-xs text-[#6e6e73] dark:text-[#a1a1a6]">{label}</p>
     </div>
   );
 }

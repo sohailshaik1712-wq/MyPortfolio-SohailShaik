@@ -1,12 +1,12 @@
 from contextlib import asynccontextmanager
 
+from api.routes.auth import router as auth_router
+from api.routes.chatbot import router as chatbot_router
+from api.routes.projects import router as project_router
+from db.base import Base
+from db.session import engine
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from app.api.routes.auth import router as auth_router
-from app.api.routes.projects import router as project_router
-from app.db.base import Base
-from app.db.session import engine
 
 
 @asynccontextmanager
@@ -35,6 +35,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(project_router)
+app.include_router(chatbot_router)
 
 
 @app.get("/")

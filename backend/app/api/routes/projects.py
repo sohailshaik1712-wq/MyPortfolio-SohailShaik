@@ -1,18 +1,18 @@
-from app.api.deps import get_current_admin
-from app.crud.project import (
+from api.deps import get_current_admin
+from crud.project import (
     create_project,
     delete_project,
     get_project,
     get_projects,
     update_project,
 )
-from app.db.session import SessionLocal
-from app.schemas.project import (
+from db.session import SessionLocal
+from fastapi import APIRouter, Depends, HTTPException, status
+from schemas.project import (
     ProjectCreate,
     ProjectResponse,
     ProjectUpdate,
 )
-from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/projects", tags=["Projects"])

@@ -1,4 +1,4 @@
-from app.core.config import ALGORITHM, SECRET_KEY
+from core.config import ALGORITHM, SECRET_KEY
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
