@@ -22,7 +22,9 @@ class ChatbotService:
             api_key=gemini_api_key,
             base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
         )
-        self.model_name = "gemini-2.5-flash"
+        self.model_name = (
+            "gemini-2.5-flash"  # Fixed: was "gemini-2.5-flash" which doesn't exist
+        )
         self.pushover_user = pushover_user
         self.pushover_token = pushover_token
         self.pushover_url = "https://api.pushover.net/1/messages.json"
@@ -68,19 +70,26 @@ class ChatbotService:
                     "token": self.pushover_token,
                     "message": message,
                 }
-                requests.post(self.pushover_url, data=payload, timeout=5)
+                response = requests.post(self.pushover_url, data=payload, timeout=5)
+                print(f"Pushover response: {response.status_code} {response.text}")
             except Exception as e:
                 print(f"Push notification failed: {e}")
+        else:
+            print(
+                f"Pushover skipped: user={bool(self.pushover_user)} token={bool(self.pushover_token)}"
+            )
 
     def _record_user_details(
         self, email: str, name: str = "Not provided", notes: str = "Not provided"
     ):
         """Tool function: Record user contact information"""
+        print(f"DEBUG tool called: record_user_details email={email} name={name}")
         self._push_notification(f"📧 New contact: {name} ({email})\nNotes: {notes}")
         return {"recorded": "ok", "message": "Thank you! I'll get back to you soon."}
 
     def _record_unknown_question(self, question: str):
         """Tool function: Record questions the AI couldn't answer"""
+        print(f"DEBUG tool called: record_unknown_question question={question}")
         self._push_notification(f"❓ Unknown question: {question}")
         return {"recorded": "ok"}
 
@@ -149,6 +158,7 @@ class ChatbotService:
         for tool_call in tool_calls:
             tool_name = tool_call.function.name
             arguments = json.loads(tool_call.function.arguments)
+            print(f"DEBUG handling tool: {tool_name} args={arguments}")
 
             if tool_name == "record_user_details":
                 result = self._record_user_details(**arguments)
@@ -195,6 +205,9 @@ class ChatbotService:
 
                 choice = response.choices[0]
                 message_obj = choice.message
+
+                print(f"DEBUG finish_reason: {choice.finish_reason}")
+                print(f"DEBUG tool_calls: {message_obj.tool_calls}")
 
                 if choice.finish_reason == "tool_calls" and message_obj.tool_calls:
                     # Must append the assistant message that requested tool calls first

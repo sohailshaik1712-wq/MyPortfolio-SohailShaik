@@ -2,12 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
-
-  // Fix cross-origin warning (optional)
-  experimental: {
-    allowedDevOrigins: ["localhost:3000", "127.0.0.1:3000", "192.168.0.5:3000"],
-  },
-
   async rewrites() {
     return [
       {

@@ -1,17 +1,15 @@
 version: "3.9"
-
 services:
   backend:
     build: ./backend
     container_name: portfolio-backend
     ports:
-      - "8000:8000"
+      - "8000:8080" # host:container — container runs on 8080
     env_file:
       - ./backend/.env
     volumes:
       - db_data:/app/data
     restart: always
-
   frontend:
     build: ./frontend
     container_name: portfolio-frontend
@@ -22,6 +20,5 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
     restart: always
-
 volumes:
   db_data:

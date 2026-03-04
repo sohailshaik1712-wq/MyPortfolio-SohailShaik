@@ -39,7 +39,7 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     response: str
-    model: str = "gemini-2.0-flash-exp"
+    model: str = "gemini-2.5-flash"
 
 
 class ContactRequest(BaseModel):

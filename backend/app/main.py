@@ -33,6 +33,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.get("/test-pushover")
+def test_pushover():
+    import os
+
+    import requests
+
+    user = os.environ.get("PUSHOVER_USER", "")
+    token = os.environ.get("PUSHOVER_TOKEN", "")
+    print(f"DEBUG pushover user={user[:5]}... token={token[:5]}...")
+    payload = {"user": user, "token": token, "message": "Test from portfolio backend"}
+    r = requests.post(
+        "https://api.pushover.net/1/messages.json", data=payload, timeout=5
+    )
+    return {
+        "status": r.status_code,
+        "response": r.json(),
+        "user_set": bool(user),
+        "token_set": bool(token),
+    }
+
+
 app.include_router(auth_router)
 app.include_router(project_router)
 app.include_router(chatbot_router)
